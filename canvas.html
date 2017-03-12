@@ -31,12 +31,12 @@
 					if(det <threshold){
 						vpanel[i][j]=1;
 						panel.fillStyle="#000000";
-						panel.fillRect(i*e,j*e,5,5);
+						panel.fillRect(i*e,j*e,e,e);
 					}
 					else{
 						vpanel[i][j]=0;
 						panel.fillStyle="#FFFFFF";
-						panel.fillRect(i*e,j*e,5,5);
+						panel.fillRect(i*e,j*e,e,e);
 					}
 				}
 			}
@@ -69,19 +69,19 @@
 					if(vpanel[i][j] == 1){
 						if(count <2){
 							panel.fillStyle="#FFFFFF";
-							panel.fillRect(i*e,j*e,5,5);
+							panel.fillRect(i*e,j*e,e,e);
 							tmp_panel[i][j] = 0;
 						}
 						else if(count > 3){
 							panel.fillStyle="#FFFFFF";
-							panel.fillRect(i*e,j*e,5,5);
+							panel.fillRect(i*e,j*e,e,e);
 							tmp_panel[i][j] = 0;
 						}
 					}
 					else{
 						if(count == 3){
 							panel.fillStyle="#000000";
-							panel.fillRect(i*e,j*e,5,5);
+							panel.fillRect(i*e,j*e,e,e);
 							tmp_panel[i][j] = 1;
 						}
 					}
