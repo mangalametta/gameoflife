@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<meta charset="UTF-8">
+	<title>Canvas execrise</title>
+	<script type="text/javascript">
+		var w = 150;
+		var delay = 80;
+		var vpanel = new Array(w);
+		function init(){
+			var c = document.getElementById("myPanel");
+			var panel = c.getContext("2d");
+			for(var i=0;i<w;i++){
+				vpanel[i] = new Array(w);
+			}
+			//init
+			for(var i=0;i<w;i++){
+				for(var j=0;j<w;j++){
+					var det = Math.floor(Math.random()*(1000))%100;
+					if(det <34){
+						panel.fillRect(i*5,j*5,5,5);
+						vpanel[i][j]=1;
+					}
+				}
+			}
+			//game on
+			setInterval("game();",delay);
+		}
+		function game(){
+			var c = document.getElementById("myPanel");
+			var panel = c.getContext("2d");
+			var movei = [-1,-1,-1,0,0,1,1,1];
+			var movej = [-1,0,1,-1,1,-1,0,1];
+			for(var i=0;i<w;i++){
+				for(var j=0;j<w;j++){
+					var count = 0;
+					for(var k=0;k<8;k++){
+						var ni = i+movei[k],nj = j+movej[k];
+						if(ni<0 || ni>=w || nj<0 || nj>=w)
+							continue;
+						if(vpanel[ni][nj] == 1){
+							count++;
+						}
+					}
+					if(count > 3 || count <2 && vpanel[i][j]==1){
+						panel.fillStyle="#FFFFFF";
+						panel.fillRect(i*5,j*5,5,5);
+						vpanel[i][j] = 0;
+					}
+					else if(count == 3 && vpanel[i][j]==0){
+						panel.fillStyle="#000000";
+						panel.fillRect(i*5,j*5,5,5);
+						vpanel[i][j] = 1;
+					}
+
+				}
+			}
+		}
+	</script>
+</html>
+<body onload="init();">
+	<canvas id="myPanel" width="750px" height="750px" style="border:2px solid #000000"></canvas>	
+
+</body>
