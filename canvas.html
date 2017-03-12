@@ -5,28 +5,38 @@
 	<script type="text/javascript">
 		var w = 150;
 		var delay = 80;
+		var moder = 100;
+		var treshold = 33;
 		var vpanel = new Array(w);
 		function init(){
 			var c = document.getElementById("myPanel");
 			var panel = c.getContext("2d");
 			for(var i=0;i<w;i++){
 				vpanel[i] = new Array(w);
+				for(var j=0;j<w;j++)
+					vpanel[i][j]=0;
 			}
 			//init
 			for(var i=0;i<w;i++){
 				for(var j=0;j<w;j++){
-					var det = Math.floor(Math.random()*(1000))%100;
-					if(det <34){
-						panel.fillRect(i*5,j*5,5,5);
+					var det = Math.floor(Math.random()*(moder*10))%moder;
+					if(det <treshold){
 						vpanel[i][j]=1;
 					}
 				}
 			}
+			vpanel[10][10]=1;
+			vpanel[10][11]=1;
+			vpanel[10][12]=1;
+			panel.fillRect(10*5,10*5,5,5);
+			panel.fillRect(10*5,11*5,5,5);
+			panel.fillRect(10*5,12*5,5,5);
 			//game on
 			setInterval("game();",delay);
 		}
 		function game(){
 			var c = document.getElementById("myPanel");
+			var tmp_panel = JSON.parse(JSON.stringify(vpanel));
 			var panel = c.getContext("2d");
 			var movei = [-1,-1,-1,0,0,1,1,1];
 			var movej = [-1,0,1,-1,1,-1,0,1];
@@ -41,19 +51,28 @@
 							count++;
 						}
 					}
-					if(count > 3 || count <2 && vpanel[i][j]==1){
-						panel.fillStyle="#FFFFFF";
-						panel.fillRect(i*5,j*5,5,5);
-						vpanel[i][j] = 0;
+					if(vpanel[i][j] == 1){
+						if(count <2){
+							panel.fillStyle="#FFFFFF";
+							panel.fillRect(i*5,j*5,5,5);
+							tmp_panel[i][j] = 0;
+						}
+						else if(count > 3){
+							panel.fillStyle="#FFFFFF";
+							panel.fillRect(i*5,j*5,5,5);
+							tmp_panel[i][j] = 0;
+						}
 					}
-					else if(count == 3 && vpanel[i][j]==0){
-						panel.fillStyle="#000000";
-						panel.fillRect(i*5,j*5,5,5);
-						vpanel[i][j] = 1;
+					else{
+						if(count == 3){
+							panel.fillStyle="#000000";
+							panel.fillRect(i*5,j*5,5,5);
+							tmp_panel[i][j] = 1;
+						}
 					}
-
 				}
 			}
+			vpanel = JSON.parse(JSON.stringify(tmp_panel));
 		}
 	</script>
 </html>
