@@ -10,6 +10,7 @@
 		var vpanel = new Array(w);
 		var timer;
 		function init(){
+			clearInterval(timer);
 			delay = parseInt(document.getElementById("delay").value);
 			moder = parseInt(document.getElementById("moder").value);
 			threshold = parseInt(document.getElementById("threshold").value);
@@ -26,6 +27,13 @@
 					var det = Math.floor(Math.random()*(moder*10))%moder;
 					if(det <threshold){
 						vpanel[i][j]=1;
+						panel.fillStyle="#000000";
+						panel.fillRect(i*5,j*5,5,5);
+					}
+					else{
+						vpanel[i][j]=0;
+						panel.fillStyle="#FFFFFF";
+						panel.fillRect(i*5,j*5,5,5);
 					}
 				}
 			}
