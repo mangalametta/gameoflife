@@ -8,7 +8,7 @@
 		var WIDTH = 1000;
 		var HEIGHT = 750;
 		var locateL = 0;
-
+		var manTimer;
 
 		function main(){
 			drawFloor();
@@ -19,17 +19,17 @@
 			var c = document.getElementById("panel");
 			var panel = c.getContext("2d");
 			panel.fillStyle = "#FFFFFF";
-			panel.fillRect(locateL,HEIGHT-80-FLOOR_HEIGHT,50,80);
+			panel.fillRect(locateL,HEIGHT-80-FLOOR_HEIGHT,50,79);
 		}
 
 		function forward(){
 			claerMan();
-			locateL +=10;
+			locateL +=5;
 			drawMan();
 		}
-		function backword(){
+		function backward(){
 			claerMan();
-			locateL -=10;
+			locateL -=5;
 			drawMan();
 		}
 
@@ -64,17 +64,17 @@
 			panel.fillRect(locateL,HEIGHT-80-FLOOR_HEIGHT,50,60);
 			panel.fillStyle = "#C4C400";
 			panel.fillRect(locateL+20,HEIGHT-50-FLOOR_HEIGHT,10,25);
-			if((locateL/10)%2==0){
-				panel.fillStyle = "#7c8763";
-				panel.fillRect(locateL+15,HEIGHT-20-FLOOR_HEIGHT,15,20);
+			if((locateL/10)%6>=3){
+				panel.fillStyle = "#e90c0c";
+				panel.fillRect(locateL+15,HEIGHT-20-FLOOR_HEIGHT,15,19);
 				panel.fillStyle = "#0C8763";
-				panel.fillRect(locateL+20,HEIGHT-20-FLOOR_HEIGHT,15,20);
+				panel.fillRect(locateL+20,HEIGHT-20-FLOOR_HEIGHT,15,19);
 			}
 			else{
-				panel.fillStyle = "#7c8763";
-				panel.fillRect(locateL+20,HEIGHT-20-FLOOR_HEIGHT,15,20);
+				panel.fillStyle = "#e90c0c";
+				panel.fillRect(locateL+20,HEIGHT-20-FLOOR_HEIGHT,15,19);
 				panel.fillStyle = "#0C8763";
-				panel.fillRect(locateL+15,HEIGHT-20-FLOOR_HEIGHT,15,20);
+				panel.fillRect(locateL+15,HEIGHT-20-FLOOR_HEIGHT,15,19);
 			}
 		}
 
@@ -84,16 +84,23 @@
 				return false;
 			} else if (event.keyCode==37) {
 				//left
-				backword();
+				clearInterval(manTimer);
+				manTimer = setInterval("backward();",50);
 				return false;
 			} else if (event.keyCode==39) {
 				//right
-				forward();
+				clearInterval(manTimer);
+				manTimer = setInterval("forward();",50);
 				return false;
 			}
 		}
-		document.onkeydown=actions;
 
+		function stopActions(){
+			clearInterval(manTimer);
+		}
+
+		document.onkeydown=actions;
+		document.onkeyup=stopActions;
 	</script>
 </head>
 <body onload="main();">
