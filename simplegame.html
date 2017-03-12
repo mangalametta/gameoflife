@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="UTF-8">
+	<title>Simple Game</title>
+	<script type="text/javascript">
+		var FLOOR_HEIGHT = 50;
+		var lineWIDTH = 5;
+		var WIDTH = 1000;
+		var HEIGHT = 750;
+		var locateL = 0;
+
+
+		function main(){
+			drawFloor();
+			drawMan();
+		}
+
+		function claerMan(){
+			var c = document.getElementById("panel");
+			var panel = c.getContext("2d");
+			panel.fillStyle = "#FFFFFF";
+			panel.fillRect(locateL,HEIGHT-80-FLOOR_HEIGHT,50,80);
+		}
+
+		function forward(){
+			claerMan();
+			locateL +=10;
+			drawMan();
+		}
+		function backword(){
+			claerMan();
+			locateL -=10;
+			drawMan();
+		}
+
+		function drawFloor(){
+			var c = document.getElementById("panel");
+			var panel = c.getContext("2d");
+			panel.fillStyle = "#D200D2";
+			panel.fillRect(0,HEIGHT-FLOOR_HEIGHT,WIDTH,FLOOR_HEIGHT);
+			for(var i = 0;i<5;i++){
+				panel.beginPath();
+				panel.strokeStyle = "brown";
+				panel.moveTo(0,HEIGHT-FLOOR_HEIGHT+i*10);
+				panel.lineTo(WIDTH,HEIGHT-FLOOR_HEIGHT+i*10);
+				panel.stroke();
+				for(var j = 0;j<50;j++){
+					var offset = 0;
+					if(i%2==0)
+						offset = 10;
+					panel.beginPath();
+					panel.strokeStyle = "brown";
+					panel.moveTo(j*20+offset,HEIGHT-FLOOR_HEIGHT+i*10);
+					panel.lineTo(j*20+offset,HEIGHT-FLOOR_HEIGHT+(i+1)*10);
+					panel.stroke();
+				}
+			}
+		}
+
+		function drawMan(){
+			var c = document.getElementById("panel");
+			var panel = c.getContext("2d");
+			panel.fillStyle = "#0C8763";
+			panel.fillRect(locateL,HEIGHT-80-FLOOR_HEIGHT,50,60);
+			panel.fillStyle = "#C4C400";
+			panel.fillRect(locateL+20,HEIGHT-50-FLOOR_HEIGHT,10,25);
+			if((locateL/10)%2==0){
+				panel.fillStyle = "#C4C4C4";
+				panel.fillRect(locateL+15,HEIGHT-20-FLOOR_HEIGHT,15,20);
+				panel.fillStyle = "#0C8763";
+				panel.fillRect(locateL+20,HEIGHT-20-FLOOR_HEIGHT,15,20);
+			}
+			else{
+				panel.fillStyle = "#C4C4C4";
+				panel.fillRect(locateL+20,HEIGHT-20-FLOOR_HEIGHT,15,20);
+				panel.fillStyle = "#0C8763";
+				panel.fillRect(locateL+15,HEIGHT-20-FLOOR_HEIGHT,15,20);
+			}
+		}
+
+		function actions() {
+			if (event.keyCode==38) {
+				//up
+				return false;
+			} else if (event.keyCode==37) {
+				//left
+				backword();
+				return false;
+			} else if (event.keyCode==39) {
+				//right
+				forward();
+				return false;
+			}
+		}
+		document.onkeydown=actions;
+
+	</script>
+</head>
+<body onload="main();">
+	<div id="wrapper">
+		<div id="game_area" style="float:left;">
+			<canvas id="panel" width="1000" height="750" style="border:2px solid #000000"></canvas>
+		</div>
+		<div id="control_area" style="float:left;">
+			<button onclick="drawMan();">Testing</button>
+		</div>
+
+	</div>
+</body>
