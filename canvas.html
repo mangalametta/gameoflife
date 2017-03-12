@@ -3,7 +3,8 @@
 	<meta charset="UTF-8">
 	<title>Canvas exercise</title>
 	<script type="text/javascript">
-		var w = 150;
+		var e;
+		var w;
 		var delay;
 		var moder;
 		var threshold;
@@ -11,6 +12,8 @@
 		var timer;
 		function init(){
 			clearInterval(timer);
+			e = parseInt(document.getElementById("e").value);
+			w = 750/e;
 			delay = parseInt(document.getElementById("delay").value);
 			moder = parseInt(document.getElementById("moder").value);
 			threshold = parseInt(document.getElementById("threshold").value);
@@ -28,21 +31,15 @@
 					if(det <threshold){
 						vpanel[i][j]=1;
 						panel.fillStyle="#000000";
-						panel.fillRect(i*5,j*5,5,5);
+						panel.fillRect(i*e,j*e,5,5);
 					}
 					else{
 						vpanel[i][j]=0;
 						panel.fillStyle="#FFFFFF";
-						panel.fillRect(i*5,j*5,5,5);
+						panel.fillRect(i*e,j*e,5,5);
 					}
 				}
 			}
-			vpanel[10][10]=1;
-			vpanel[10][11]=1;
-			vpanel[10][12]=1;
-			panel.fillRect(10*5,10*5,5,5);
-			panel.fillRect(10*5,11*5,5,5);
-			panel.fillRect(10*5,12*5,5,5);
 			//game on
 			timer = setInterval("game();",delay);
 		}
@@ -72,19 +69,19 @@
 					if(vpanel[i][j] == 1){
 						if(count <2){
 							panel.fillStyle="#FFFFFF";
-							panel.fillRect(i*5,j*5,5,5);
+							panel.fillRect(i*e,j*e,5,5);
 							tmp_panel[i][j] = 0;
 						}
 						else if(count > 3){
 							panel.fillStyle="#FFFFFF";
-							panel.fillRect(i*5,j*5,5,5);
+							panel.fillRect(i*e,j*e,5,5);
 							tmp_panel[i][j] = 0;
 						}
 					}
 					else{
 						if(count == 3){
 							panel.fillStyle="#000000";
-							panel.fillRect(i*5,j*5,5,5);
+							panel.fillRect(i*e,j*e,5,5);
 							tmp_panel[i][j] = 1;
 						}
 					}
@@ -103,8 +100,11 @@
 			<p>Delay:</p>
 			<input type="text" id="delay" value="80">
 			<br>
+			<p>width:</p>
+			<input type="text" id="e" value="2">
+			<br>
 			<p>threshold:</p>
-			<input type="text" id="threshold" value="33">
+			<input type="text" id="threshold" value="10">
 			<br>
 			<p>Moder:</p>
 			<input type="text" id="moder" value="100">
