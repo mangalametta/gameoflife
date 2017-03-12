@@ -4,11 +4,15 @@
 	<title>Canvas exercise</title>
 	<script type="text/javascript">
 		var w = 150;
-		var delay = 80;
-		var moder = 100;
-		var treshold = 33;
+		var delay;
+		var moder;
+		var threshold;
 		var vpanel = new Array(w);
+		var timer;
 		function init(){
+			delay = parseInt(document.getElementById("delay").value);
+			moder = parseInt(document.getElementById("moder").value);
+			threshold = parseInt(document.getElementById("threshold").value);
 			var c = document.getElementById("myPanel");
 			var panel = c.getContext("2d");
 			for(var i=0;i<w;i++){
@@ -20,7 +24,7 @@
 			for(var i=0;i<w;i++){
 				for(var j=0;j<w;j++){
 					var det = Math.floor(Math.random()*(moder*10))%moder;
-					if(det <treshold){
+					if(det <threshold){
 						vpanel[i][j]=1;
 					}
 				}
@@ -32,7 +36,13 @@
 			panel.fillRect(10*5,11*5,5,5);
 			panel.fillRect(10*5,12*5,5,5);
 			//game on
-			setInterval("game();",delay);
+			timer = setInterval("game();",delay);
+		}
+		function stop(){
+			clearInterval(timer);
+		}
+		function resume(){
+			timer = setInterval("game();",delay);
 		}
 		function game(){
 			var c = document.getElementById("myPanel");
@@ -76,7 +86,27 @@
 		}
 	</script>
 </html>
-<body onload="init();">
-	<canvas id="myPanel" width="750px" height="750px" style="border:2px solid #000000"></canvas>	
+<body>
+	<div id="wrapper">
+		<div id = "show_area" style="float:left;">
+			<canvas id="myPanel" width="750px" height="750px" style="border:2px solid #000000"></canvas>
+		</div>
+		<div id = "setting" style="float:left; border:2px solid #000000">
+			<p>Delay:</p>
+			<input type="text" id="delay" value="80">
+			<br>
+			<p>threshold:</p>
+			<input type="text" id="threshold" value="33">
+			<br>
+			<p>Moder:</p>
+			<input type="text" id="moder" value="100">
+			<p>初始設置機率為 threshold/moder</p>
+			<button onclick="init();">Init</button>
+			<button onclick="stop();">Stop</button>
+			<button onclick="resume();">Resume</button>
+		</div>
+	</div>
+
+		
 
 </body>
