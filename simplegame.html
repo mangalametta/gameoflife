@@ -8,7 +8,6 @@
 		var WIDTH = 1000;
 		var HEIGHT = 750;
 		var locateL = 0;
-		var manTimer;
 
 		function main(){
 			drawFloor();
@@ -84,23 +83,16 @@
 				return false;
 			} else if (event.keyCode==37) {
 				//left
-				clearInterval(manTimer);
-				manTimer = setInterval("backward();",50);
+				backward();
 				return false;
 			} else if (event.keyCode==39) {
 				//right
-				clearInterval(manTimer);
-				manTimer = setInterval("forward();",50);
+				forward();
 				return false;
 			}
 		}
 
-		function stopActions(){
-			clearInterval(manTimer);
-		}
-
 		document.onkeydown=actions;
-		document.onkeyup=stopActions;
 	</script>
 </head>
 <body onload="main();">
