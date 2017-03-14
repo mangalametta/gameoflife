@@ -3,7 +3,7 @@ var lineWIDTH = 5;
 var WIDTH = 1000;
 var HEIGHT = 750;
 
-class root{
+class Root{
 	constructor(al, au){
 		this.absLeft = al;
 		this.absUp = au;
@@ -12,7 +12,7 @@ class root{
 	}
 }
 
-class barrier extends root{
+class Barrier extends Root{
 	constructor(al,au,w,h,I){
 		super(al,au);
 		this.width = w;
@@ -21,7 +21,7 @@ class barrier extends root{
 	}
 }
 
-class player extends root{
+class Player extends Root{
 	constructor(al,au,n){
 		super(al,au);
 		this.width = 50;
@@ -68,12 +68,17 @@ class player extends root{
 		this.absLeft += 5;
 	}
 
-	backword(){
+	backward(){
 		this.absLeft -= 5;
 	}
+
+	upward(){
+		
+	}
+
 }
 
-class box extends barrier{
+class Box extends Barrier{
 	constructor(al,au,w,h,s,px){
 		super(al,au,w,h,0);
 		this.symbol = s;
@@ -103,7 +108,7 @@ class box extends barrier{
 	}
 }
 
-class brick extends barrier{
+class Brick extends Barrier{
 	constructor(al,au,w,h){
 		super(al,au,w,h,1);
 	}
@@ -143,4 +148,14 @@ class brick extends barrier{
 		panel.lineTo(this.absLeft+this.width,HEIGHT-this.absUp+this.height);
 		panel.stroke();
 	}
+}
+
+function updateScreen(panel, player, bricks, boxes){
+	panel.fillStyle = "#FFFFFF";
+	panel.fillRect(0,0,WIDTH,HEIGHT);
+	player.draw(panel);
+	for(var i in bricks)
+		bricks[i].draw(panel);
+	for(var i in boxes)
+		boxes[i].draw(panel);
 }

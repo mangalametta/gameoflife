@@ -3,16 +3,17 @@
 	<meta charset="UTF-8">
 	<title>Simple Game</title>
 	<script type="text/javascript" src="game.js"></script>
-	<script type="text/javascript">		
+	<script type="text/javascript">
+		var timer, panel, player, bricks, boxes;
 		function main(){
 			var c = document.getElementById("panel");
-			var panel = c.getContext("2d");
-			var floor = new brick(0,FLOOR_HEIGHT,WIDTH,FLOOR_HEIGHT);
-			floor.draw(panel);
-			var a = new player(0,80,"Kirito");
-			a.draw(panel);
-			var b = new box(100,200,50,50,"🌞",50);
-			b.draw(panel);
+			panel = c.getContext("2d");
+			player = new Player(0,80,"Kirito");
+			bricks = new Array();
+			boxes = new Array();
+			bricks[0] = new Brick(0,FLOOR_HEIGHT,WIDTH,FLOOR_HEIGHT);
+			boxes[0] = new Box(100,200,50,50,"G",50);
+			timer = setInterval("updateScreen(panel,player,bricks,boxes);",30);
 		}
 
 		function drawBG(){
@@ -25,9 +26,11 @@
 				return false;
 			} else if (event.keyCode==37) {
 				//left
+				player.backward();
 				return false;
 			} else if (event.keyCode==39) {
 				//right
+				player.forward();
 				return false;
 			}
 		}
