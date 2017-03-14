@@ -2,79 +2,21 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Simple Game</title>
-	<script type="text/javascript">
-		var FLOOR_HEIGHT = 50;
-		var lineWIDTH = 5;
-		var WIDTH = 1000;
-		var HEIGHT = 750;
-		var locateL = 0;
-
+	<script type="text/javascript" src="game.js"></script>
+	<script type="text/javascript">		
 		function main(){
-			drawFloor();
-			drawMan();
-		}
-
-		function claerMan(){
 			var c = document.getElementById("panel");
 			var panel = c.getContext("2d");
-			panel.fillStyle = "#FFFFFF";
-			panel.fillRect(locateL,HEIGHT-80-FLOOR_HEIGHT,50,79);
+			var floor = new brick(0,FLOOR_HEIGHT,WIDTH,FLOOR_HEIGHT);
+			floor.draw(panel);
+			var a = new player(0,80,"Kirito");
+			a.draw(panel);
+			var b = new box(100,200,50,50,"🌞",50);
+			b.draw(panel);
 		}
 
-		function forward(){
-			claerMan();
-			locateL +=5;
-			drawMan();
-		}
-		function backward(){
-			claerMan();
-			locateL -=5;
-			drawMan();
-		}
+		function drawBG(){
 
-		function drawFloor(){
-			var c = document.getElementById("panel");
-			var panel = c.getContext("2d");
-			panel.fillStyle = "#D200D2";
-			panel.fillRect(0,HEIGHT-FLOOR_HEIGHT,WIDTH,FLOOR_HEIGHT);
-			for(var i = 0;i<5;i++){
-				panel.beginPath();
-				panel.strokeStyle = "brown";
-				panel.moveTo(0,HEIGHT-FLOOR_HEIGHT+i*10);
-				panel.lineTo(WIDTH,HEIGHT-FLOOR_HEIGHT+i*10);
-				panel.stroke();
-				for(var j = 0;j<50;j++){
-					var offset = 0;
-					if(i%2==0)
-						offset = 10;
-					panel.beginPath();
-					panel.strokeStyle = "brown";
-					panel.moveTo(j*20+offset,HEIGHT-FLOOR_HEIGHT+i*10);
-					panel.lineTo(j*20+offset,HEIGHT-FLOOR_HEIGHT+(i+1)*10);
-					panel.stroke();
-				}
-			}
-		}
-
-		function drawMan(){
-			var c = document.getElementById("panel");
-			var panel = c.getContext("2d");
-			panel.fillStyle = "#0C8763";
-			panel.fillRect(locateL,HEIGHT-80-FLOOR_HEIGHT,50,60);
-			panel.fillStyle = "#C4C400";
-			panel.fillRect(locateL+20,HEIGHT-50-FLOOR_HEIGHT,10,25);
-			if((locateL/10)%6>=3){
-				panel.fillStyle = "#e90c0c";
-				panel.fillRect(locateL+15,HEIGHT-20-FLOOR_HEIGHT,15,19);
-				panel.fillStyle = "#0C8763";
-				panel.fillRect(locateL+20,HEIGHT-20-FLOOR_HEIGHT,15,19);
-			}
-			else{
-				panel.fillStyle = "#e90c0c";
-				panel.fillRect(locateL+20,HEIGHT-20-FLOOR_HEIGHT,15,19);
-				panel.fillStyle = "#0C8763";
-				panel.fillRect(locateL+15,HEIGHT-20-FLOOR_HEIGHT,15,19);
-			}
 		}
 
 		function actions() {
@@ -83,11 +25,9 @@
 				return false;
 			} else if (event.keyCode==37) {
 				//left
-				backward();
 				return false;
 			} else if (event.keyCode==39) {
 				//right
-				forward();
 				return false;
 			}
 		}
