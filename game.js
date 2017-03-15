@@ -7,10 +7,13 @@ var MAP_WIDTH = 2000;
 var Present_mapLeft = 0;
 var forwarding = false;
 var backwarding = false;
+var upwarding = false;
+var upCounter = 0;
+var upLimit = 12;
 
 function is_overlape(obj1, obj2){
-	if((obj1.absUp < obj2.absUp && obj1.absUp > obj2.absUp-obj2.height)||(obj2.absUp < obj1.absUp && obj2.absUp > obj1.absUp-obj1.height)){
-		if((obj1.mapLeft > obj2.mapLeft && obj1.mapLeft < obj2.mapLeft+obj2.width)||(obj2.mapLeft > obj1.mapLeft && obj2.mapLeft < obj1.mapLeft+obj1.width)){
+	if((obj1.mapLeft >= obj2.mapLeft && obj1.mapLeft < obj2.mapLeft+obj2.width)||(obj2.mapLeft >= obj1.mapLeft && obj2.mapLeft < obj1.mapLeft+obj1.width)){
+		if((obj1.absUp <= obj2.absUp && obj1.absUp > obj2.absUp-obj2.height)||(obj2.absUp <= obj1.absUp && obj2.absUp > obj1.absUp-obj1.height)){
 			return true;
 		}
 		else{
@@ -215,6 +218,31 @@ function playerMotion(player, bricks, boxes){
 				break;
 			}
 		}
-
 	}
+	if(upwarding){
+		if(upCounter >= upLimit){
+			upwarding = false;
+			upCounter = 0;
+		}
+		else{
+			player.absUp += 20;
+			for(var i in bricks){
+				if(player.chackOverlape(bricks[i])){
+					player.absUp -=20;
+					break;
+				}
+			}
+			upCounter++;
+		}
+	}
+
+
+	player.absUp -= 10;
+	for(var i in bricks){
+		if(player.chackOverlape(bricks[i])){
+			player.absUp +=10;
+			break;
+		}
+	}
+
 }

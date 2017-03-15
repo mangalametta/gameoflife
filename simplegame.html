@@ -8,41 +8,46 @@
 		function main(){
 			var c = document.getElementById("panel");
 			panel = c.getContext("2d");
-			player = new Player(100,80+FLOOR_HEIGHT,"Kirito");
+			player = new Player(100,HEIGHT,"Kirito");
 			bricks = new Array();
 			boxes = new Array();
 			bricks[0] = new Brick(0,FLOOR_HEIGHT,MAP_WIDTH,FLOOR_HEIGHT);
 			bricks[1] = new	Brick(300,FLOOR_HEIGHT+100,60,50);
 			bricks[2] = new	Brick(30,FLOOR_HEIGHT+100,60,50);
-			boxes[0] = new Box(100,200,50,50,"D",50);
+			boxes[0] = new Box(500,200,50,50,"D",50);
 			screenTimer = setInterval("updateScreen(panel,player,bricks,boxes);",30);
-			playerTimer = setInterval("playerMotion(player, bricks, boxes);",100);
+			playerTimer = setInterval("playerMotion(player, bricks, boxes);",40);
 		}
 
-		function keyDownActions() {
-			if (event.keyCode==37) {
+		function keyDownActions(e) {
+			if (e.keyCode==37){
 				//left
 				backwarding = true;
 				return false;
-			} else if (event.keyCode==39) {
+			}
+			else if (e.keyCode==39){
 				//right
 				forwarding = true;
 				return false;
 			}
 		}
 
-		function keyUpActions() {
-			if (event.keyCode==37) {
+		function keyUpActions(e) {
+			if (e.keyCode==37){
 				//left
 				backwarding = false;
 				return false;
-			} else if (event.keyCode==39) {
+			}
+			else if (e.keyCode==39){
 				//right
 				forwarding = false;
 				return false;
 			}
+			else if(e.keyCode==38){
+				upwarding = true;
+				return false;
+			}
 		}
-
 		document.onkeydown=keyDownActions;
 		document.onkeyup=keyUpActions;
 	</script>
