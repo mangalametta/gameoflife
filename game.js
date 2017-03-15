@@ -9,21 +9,7 @@ var forwarding = false;
 var backwarding = false;
 var upwarding = false;
 var upCounter = 0;
-var upLimit = 12;
-
-function is_overlape(obj1, obj2){
-	if((obj1.mapLeft >= obj2.mapLeft && obj1.mapLeft < obj2.mapLeft+obj2.width)||(obj2.mapLeft >= obj1.mapLeft && obj2.mapLeft < obj1.mapLeft+obj1.width)){
-		if((obj1.absUp <= obj2.absUp && obj1.absUp > obj2.absUp-obj2.height)||(obj2.absUp <= obj1.absUp && obj2.absUp > obj1.absUp-obj1.height)){
-			return true;
-		}
-		else{
-			return false;
-		}
-	}
-	else{
-		return false;
-	}
-}
+var upLimit = 7;
 
 class Root{
 	constructor(ml, au){
@@ -48,7 +34,27 @@ class MovingObject extends Root{
 		super(ml,au);
 	}
 	chackOverlape(obj){
-		return is_overlape(this,obj);
+			if((this.mapLeft >= obj.mapLeft && this.mapLeft < obj.mapLeft+obj.width)||(obj.mapLeft >= this.mapLeft && obj.mapLeft < this.mapLeft+this.width)){
+				if((this.absUp <= obj.absUp && this.absUp > obj.absUp-obj.height)||(obj.absUp <= this.absUp && obj.absUp > this.absUp-this.height)){
+					return true;
+				}
+				else{
+					return false;
+				}
+			}
+			else{
+				return false;
+			}
+		}
+	fallingDetermine(obj){
+		if((this.mapLeft >= obj.mapLeft && this.mapLeft <= obj.mapLeft+obj.width)||(obj.mapLeft >= this.mapLeft && obj.mapLeft < this.mapLeft+this.width)){
+			if(obj.absUp <= this.absUp && obj.absUp > this.absUp-this.height){
+				console.log(12);
+				return false;
+			}
+			return true;
+		}
+		return true;
 	}
 }
 
@@ -225,10 +231,12 @@ function playerMotion(player, bricks, boxes){
 			upCounter = 0;
 		}
 		else{
-			player.absUp += 20;
+			player.absUp += 40;
 			for(var i in bricks){
 				if(player.chackOverlape(bricks[i])){
-					player.absUp -=20;
+					player.absUp = bricks[i].absUp-bricks[i].height+20;
+					upwarding=false;
+					upCounter=0;
 					break;
 				}
 			}
@@ -237,10 +245,10 @@ function playerMotion(player, bricks, boxes){
 	}
 
 
-	player.absUp -= 10;
+	player.absUp -= 20;
 	for(var i in bricks){
-		if(player.chackOverlape(bricks[i])){
-			player.absUp +=10;
+		if(!player.fallingDetermine(bricks[i])){
+			player.absUp = bricks[i].absUp+player.height;
 			break;
 		}
 	}
