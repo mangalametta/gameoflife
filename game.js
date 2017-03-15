@@ -8,6 +8,20 @@ var Present_mapLeft = 0;
 var forwarding = false;
 var backwarding = false;
 
+function is_overlape(obj1, obj2){
+	if((obj1.absUp < obj2.absUp && obj1.absUp > obj2.absUp-obj2.height)||(obj2.absUp < obj1.absUp && obj2.absUp > obj1.absUp-obj1.height)){
+		if((obj1.mapLeft > obj2.mapLeft && obj1.mapLeft < obj2.mapLeft+obj2.width)||(obj2.mapLeft > obj1.mapLeft && obj2.mapLeft < obj1.mapLeft+obj1.width)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	else{
+		return false;
+	}
+}
+
 class Root{
 	constructor(ml, au){
 		this.mapLeft = ml;
@@ -26,9 +40,19 @@ class Barrier extends Root{
 	}
 }
 
-class Player extends Root{
+class MovingObject extends Root{
+	constructor(ml, au){
+		super(ml,au);
+	}
+	chackOverlape(obj){
+		return is_overlape(this,obj);
+	}
+}
+
+class Player extends MovingObject{
 	constructor(ml,au,n){
 		super(ml,au);
+		console.log(this.absUp);
 		this.width = 50;
 		this.height = 80;
 		this.name = n;
@@ -52,20 +76,20 @@ class Player extends Root{
 		panel.fillText("HP "+this.hp,70 ,13);
 		//player
 		panel.fillStyle = "#0C8763";
-		panel.fillRect(this.mapLeft - Present_mapLeft, HEIGHT-this.absUp-FLOOR_HEIGHT,50,60);
+		panel.fillRect(this.mapLeft - Present_mapLeft, HEIGHT-this.absUp,50,60);
 		panel.fillStyle = "#C4C400";
-		panel.fillRect(this.mapLeft+20 - Present_mapLeft,HEIGHT-this.absUp+30-FLOOR_HEIGHT,10,25);
+		panel.fillRect(this.mapLeft+20 - Present_mapLeft,HEIGHT-this.absUp+30,10,25);
 		if((this.mapLeft/10)%6>=3){
 			panel.fillStyle = "#e90c0c";
-			panel.fillRect(this.mapLeft+15 -Present_mapLeft,HEIGHT-this.absUp+60-FLOOR_HEIGHT,15,19);
+			panel.fillRect(this.mapLeft+15 -Present_mapLeft,HEIGHT-this.absUp+60,15,20);
 			panel.fillStyle = "#0C8763";
-			panel.fillRect(this.mapLeft+20 -Present_mapLeft,HEIGHT-this.absUp+60-FLOOR_HEIGHT,15,19);
+			panel.fillRect(this.mapLeft+20 -Present_mapLeft,HEIGHT-this.absUp+60,15,20);
 		}
 		else{
 			panel.fillStyle = "#e90c0c";
-			panel.fillRect(this.mapLeft+20 -Present_mapLeft,HEIGHT-this.absUp+60-FLOOR_HEIGHT,15,19);
+			panel.fillRect(this.mapLeft+20 -Present_mapLeft,HEIGHT-this.absUp+60,15,20);
 			panel.fillStyle = "#0C8763";
-			panel.fillRect(this.mapLeft+15 -Present_mapLeft,HEIGHT-this.absUp+60-FLOOR_HEIGHT,15,19);
+			panel.fillRect(this.mapLeft+15 -Present_mapLeft,HEIGHT-this.absUp+60,15,20);
 		}
 	}
 
@@ -86,6 +110,9 @@ class Player extends Root{
 		
 	}
 
+	chackOverlape(obj){
+		return super.chackOverlape(obj);
+	}
 }
 
 class Box extends Barrier{
@@ -125,7 +152,7 @@ class Brick extends Barrier{
 	draw(panel){
 		panel.fillStyle = "#000000";
 		panel.fillRect(this.mapLeft -Present_mapLeft,HEIGHT-this.absUp,this.width,this.height);
-		for(var i = 0;i<this.absUp/10;i++){
+		for(var i = 0;i<this.height/10;i++){
 			panel.beginPath();
 			panel.strokeStyle = "brown";
 			panel.moveTo(this.mapLeft -Present_mapLeft,HEIGHT-this.absUp+i*10);
@@ -170,11 +197,24 @@ function updateScreen(panel, player, bricks, boxes){
 		boxes[i].draw(panel);
 }
 
-function playerMotion(player){
+function playerMotion(player, bricks, boxes){
 	if(forwarding){
 		player.xmoving(5);
+		for(var i in bricks){
+			if(player.chackOverlape(bricks[i])){
+				player.xmoving(-5);
+				break;
+			}
+		}
 	}
 	else if(backwarding){
 		player.xmoving(-5);
+		for(var i in bricks){
+			if(player.chackOverlape(bricks[i])){
+				player.xmoving(5);
+				break;
+			}
+		}
+
 	}
 }

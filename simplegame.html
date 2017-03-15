@@ -8,17 +8,15 @@
 		function main(){
 			var c = document.getElementById("panel");
 			panel = c.getContext("2d");
-			player = new Player(0,80,"Kirito");
+			player = new Player(100,80+FLOOR_HEIGHT,"Kirito");
 			bricks = new Array();
 			boxes = new Array();
 			bricks[0] = new Brick(0,FLOOR_HEIGHT,MAP_WIDTH,FLOOR_HEIGHT);
+			bricks[1] = new	Brick(300,FLOOR_HEIGHT+100,60,50);
+			bricks[2] = new	Brick(30,FLOOR_HEIGHT+100,60,50);
 			boxes[0] = new Box(100,200,50,50,"D",50);
 			screenTimer = setInterval("updateScreen(panel,player,bricks,boxes);",30);
-			playerTimer = setInterval("playerMotion(player);",100);
-		}
-
-		function drawBG(){
-
+			playerTimer = setInterval("playerMotion(player, bricks, boxes);",100);
 		}
 
 		function keyDownActions() {
@@ -52,7 +50,7 @@
 <body onload="main();">
 	<div id="wrapper">
 		<div id="game_area" style="float:left;">
-			<canvas id="panel" width="1000" height="750" style="border:2px solid #000000"></canvas>
+			<canvas id="panel" width="1000" height="750" style="border:2px solid #666666"></canvas>
 		</div>
 		<div id="control_area" style="float:left;">
 			<button onclick="drawMan();">Testing</button>
