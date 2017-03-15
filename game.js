@@ -35,7 +35,7 @@ class MovingObject extends Root{
 	}
 	chackOverlape(obj){
 			if((this.mapLeft >= obj.mapLeft && this.mapLeft < obj.mapLeft+obj.width)||(obj.mapLeft >= this.mapLeft && obj.mapLeft < this.mapLeft+this.width)){
-				if((this.absUp <= obj.absUp && this.absUp > obj.absUp-obj.height)||(obj.absUp <= this.absUp && obj.absUp > this.absUp-this.height)){
+				if((this.absUp <= obj.absUp&& this.absUp > obj.absUp-obj.height)||(obj.absUp <= this.absUp && obj.absUp > this.absUp-this.height)){
 					return true;
 				}
 				else{
@@ -49,7 +49,6 @@ class MovingObject extends Root{
 	fallingDetermine(obj){
 		if((this.mapLeft >= obj.mapLeft && this.mapLeft <= obj.mapLeft+obj.width)||(obj.mapLeft >= this.mapLeft && obj.mapLeft < this.mapLeft+this.width)){
 			if(obj.absUp <= this.absUp && obj.absUp > this.absUp-this.height){
-				console.log(12);
 				return false;
 			}
 			return true;

@@ -13,7 +13,7 @@
 			boxes = new Array();
 			bricks[0] = new Brick(0,FLOOR_HEIGHT,MAP_WIDTH,FLOOR_HEIGHT);
 			bricks[1] = new	Brick(300,FLOOR_HEIGHT+100,60,50);
-			bricks[2] = new	Brick(30,FLOOR_HEIGHT+200,60,50);
+			bricks[2] = new	Brick(30,FLOOR_HEIGHT+300,60,50);
 			boxes[0] = new Box(500,200,50,50,"D",50);
 			screenTimer = setInterval("updateScreen(panel,player,bricks,boxes);",30);
 			playerTimer = setInterval("playerMotion(player, bricks, boxes);",40);
