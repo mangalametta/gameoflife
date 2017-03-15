@@ -5,6 +5,8 @@ var WIDTH = 1000;
 var HEIGHT = 750;
 var MAP_WIDTH = 2000;
 var Present_mapLeft = 0;
+var forwarding = false;
+var backwarding = false;
 
 class Root{
 	constructor(ml, au){
@@ -68,21 +70,16 @@ class Player extends Root{
 	}
 
 	xmoving(distance){
-		if(this.mapLeft + this.width >= WIDTH/2 && MAP_WIDTH - this.mapLeft >= WIDTH/2 && Present_mapLeft + distance >=0 && Present_mapLeft +distance +WIDTH <=MAP_WIDTH){
+		if(this.mapLeft + distance +this.width >MAP_WIDTH || this.mapLeft + distance <0){
+			return;
+		}
+		else if(this.mapLeft + this.width/2 >= WIDTH/2 && MAP_WIDTH - this.mapLeft >= WIDTH/2 && Present_mapLeft + distance >=0 && Present_mapLeft +distance +WIDTH <=MAP_WIDTH){
 			this.mapLeft += distance;
 			Present_mapLeft += distance;
 		}
 		else{
 			this.mapLeft += distance;
 		}
-	}
-
-	forward(){
-		this.xmoving(5);
-	}
-
-	backward(){
-		this.xmoving(-5);
 	}
 
 	upward(){
@@ -171,4 +168,13 @@ function updateScreen(panel, player, bricks, boxes){
 		bricks[i].draw(panel);
 	for(var i in boxes)
 		boxes[i].draw(panel);
+}
+
+function playerMotion(player){
+	if(forwarding){
+		player.xmoving(5);
+	}
+	else if(backwarding){
+		player.xmoving(-5);
+	}
 }

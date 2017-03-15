@@ -4,7 +4,7 @@
 	<title>Simple Game</title>
 	<script type="text/javascript" src="game.js"></script>
 	<script type="text/javascript">
-		var timer, panel, player, bricks, boxes;
+		var screenTimer, playerTimer, panel, player, bricks, boxes;
 		function main(){
 			var c = document.getElementById("panel");
 			panel = c.getContext("2d");
@@ -13,29 +13,40 @@
 			boxes = new Array();
 			bricks[0] = new Brick(0,FLOOR_HEIGHT,MAP_WIDTH,FLOOR_HEIGHT);
 			boxes[0] = new Box(100,200,50,50,"D",50);
-			timer = setInterval("updateScreen(panel,player,bricks,boxes);",30);
+			screenTimer = setInterval("updateScreen(panel,player,bricks,boxes);",30);
+			playerTimer = setInterval("playerMotion(player);",100);
 		}
 
 		function drawBG(){
 
 		}
 
-		function actions() {
-			if (event.keyCode==38) {
-				//up
-				return false;
-			} else if (event.keyCode==37) {
+		function keyDownActions() {
+			if (event.keyCode==37) {
 				//left
-				player.backward();
+				backwarding = true;
 				return false;
 			} else if (event.keyCode==39) {
 				//right
-				player.forward();
+				forwarding = true;
 				return false;
 			}
 		}
 
-		document.onkeydown=actions;
+		function keyUpActions() {
+			if (event.keyCode==37) {
+				//left
+				backwarding = false;
+				return false;
+			} else if (event.keyCode==39) {
+				//right
+				forwarding = false;
+				return false;
+			}
+		}
+
+		document.onkeydown=keyDownActions;
+		document.onkeyup=keyUpActions;
 	</script>
 </head>
 <body onload="main();">
