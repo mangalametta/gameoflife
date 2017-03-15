@@ -65,6 +65,7 @@ class Player extends MovingObject{
 		this.height = 80;
 		this.name = n;
 		this.hp=100;
+		this.inAir = true;
 	}
 
 	draw(panel){
@@ -242,12 +243,12 @@ function playerMotion(player, bricks, boxes){
 			upCounter++;
 		}
 	}
-
-
 	player.absUp -= 20;
+	player.inAir = true;
 	for(var i in bricks){
 		if(!player.fallingDetermine(bricks[i])){
 			player.absUp = bricks[i].absUp+player.height;
+			player.inAir = false;
 			break;
 		}
 	}

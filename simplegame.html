@@ -8,7 +8,7 @@
 		function main(){
 			var c = document.getElementById("panel");
 			panel = c.getContext("2d");
-			player = new Player(100,FLOOR_HEIGHT+80,"Kirito");
+			player = new Player(100,HEIGHT,"Kirito");
 			bricks = new Array();
 			boxes = new Array();
 			bricks[0] = new Brick(0,FLOOR_HEIGHT,MAP_WIDTH,FLOOR_HEIGHT);
@@ -44,7 +44,8 @@
 				return false;
 			}
 			else if(e.keyCode==38){
-				upwarding = true;
+				if(!player.inAir)
+					upwarding = true;
 				return false;
 			}
 		}
