@@ -11,8 +11,8 @@
 			player = new Player(0,80,"Kirito");
 			bricks = new Array();
 			boxes = new Array();
-			bricks[0] = new Brick(0,FLOOR_HEIGHT,WIDTH,FLOOR_HEIGHT);
-			boxes[0] = new Box(100,200,50,50,"G",50);
+			bricks[0] = new Brick(0,FLOOR_HEIGHT,MAP_WIDTH,FLOOR_HEIGHT);
+			boxes[0] = new Box(100,200,50,50,"D",50);
 			timer = setInterval("updateScreen(panel,player,bricks,boxes);",30);
 		}
 
