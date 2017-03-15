@@ -11,12 +11,17 @@
 			player = new Player(100,HEIGHT,"Kirito");
 			bricks = new Array();
 			boxes = new Array();
+			monsters = new Array();
 			bricks[0] = new Brick(0,FLOOR_HEIGHT,MAP_WIDTH,FLOOR_HEIGHT);
-			bricks[1] = new	Brick(300,FLOOR_HEIGHT+100,60,50);
-			bricks[2] = new	Brick(30,FLOOR_HEIGHT+300,60,50);
-			boxes[0] = new Box(500,200,50,50,"D",50);
-			screenTimer = setInterval("updateScreen(panel,player,bricks,boxes);",30);
-			playerTimer = setInterval("playerMotion(player, bricks, boxes);",40);
+			bricks[1] = new	Brick(300,FLOOR_HEIGHT+100,60,100);
+			bricks[2] = new	Brick(240,FLOOR_HEIGHT+50,60,50);
+			bricks[3] = new	Brick(360,FLOOR_HEIGHT+150,60,150);
+			bricks[4] = new Brick(420,FLOOR_HEIGHT+200,60,200);
+			bricks[5] = new Brick(480,FLOOR_HEIGHT+250,60,250);
+			monsters[1] = new Monster(700,FLOOR_HEIGHT+50,50,50,580,900,"背霸","🐨",1);
+
+			screenTimer = setInterval("updateScreen(panel,player,bricks,boxes,monsters);",30);
+			playerTimer = setInterval("Motions(player, monsters);",40);
 		}
 
 		function keyDownActions(e) {

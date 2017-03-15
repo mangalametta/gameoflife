@@ -9,7 +9,7 @@ var forwarding = false;
 var backwarding = false;
 var upwarding = false;
 var upCounter = 0;
-var upLimit = 7;
+var upLimit = 5;
 
 class Root{
 	constructor(ml, au){
@@ -33,7 +33,7 @@ class MovingObject extends Root{
 	constructor(ml, au){
 		super(ml,au);
 	}
-	chackOverlape(obj){
+	checkOverlape(obj){
 			if((this.mapLeft >= obj.mapLeft && this.mapLeft < obj.mapLeft+obj.width)||(obj.mapLeft >= this.mapLeft && obj.mapLeft < this.mapLeft+this.width)){
 				if((this.absUp <= obj.absUp&& this.absUp > obj.absUp-obj.height)||(obj.absUp <= this.absUp && obj.absUp > this.absUp-this.height)){
 					return true;
@@ -57,6 +57,31 @@ class MovingObject extends Root{
 	}
 }
 
+class Monster extends MovingObject{
+	constructor(ml,au,h,w,lmin,lmax,n,s,v){
+		super(ml,au);
+		this.name = n;
+		this.height = h;
+		this.width = w;
+		this.minLeft = lmin;
+		this.maxLeft = lmax;
+		this.symbol = s;
+		this.vector = 1;
+	}
+	draw(panel){
+		panel.fillStyle = "#90c2f4";
+		panel.fillRect(this.mapLeft - Present_mapLeft, HEIGHT - this.absUp-14,40,15);
+		panel.fillStyle = "#000000";
+		panel.font = "15px Ariml";
+		panel.fillText(this.name, this.mapLeft -Present_mapLeft,HEIGHT - this.absUp);
+		panel.font = "50px Ariml";
+		panel.fillText(this.symbol, this.mapLeft -Present_mapLeft,HEIGHT-this.absUp+this.height,this.width);
+	}
+	checkOverlape(obj){
+		return super.checkOverlape(obj);
+	}
+}
+
 class Player extends MovingObject{
 	constructor(ml,au,n){
 		super(ml,au);
@@ -67,7 +92,6 @@ class Player extends MovingObject{
 		this.hp=100;
 		this.inAir = true;
 	}
-
 	draw(panel){
 		//name
 		panel.fillStyle = "#90c2f4";
@@ -101,7 +125,6 @@ class Player extends MovingObject{
 			panel.fillRect(this.mapLeft+15 -Present_mapLeft,HEIGHT-this.absUp+60,15,20);
 		}
 	}
-
 	xmoving(distance){
 		if(this.mapLeft + distance +this.width >MAP_WIDTH || this.mapLeft + distance <0){
 			return;
@@ -114,13 +137,8 @@ class Player extends MovingObject{
 			this.mapLeft += distance;
 		}
 	}
-
-	upward(){
-		
-	}
-
-	chackOverlape(obj){
-		return super.chackOverlape(obj);
+	checkOverlape(obj){
+		return super.checkOverlape(obj);
 	}
 }
 
@@ -194,9 +212,10 @@ class Brick extends Barrier{
 		panel.lineTo(this.mapLeft -Present_mapLeft+this.width,HEIGHT-this.absUp+this.height);
 		panel.stroke();
 	}
+
 }
 
-function updateScreen(panel, player, bricks, boxes){
+function updateScreen(panel, player, bricks, boxes, mosters){
 	panel.fillStyle = "#FFFFFF";
 	panel.fillRect(0,0,WIDTH,HEIGHT);
 	player.draw(panel);
@@ -204,14 +223,25 @@ function updateScreen(panel, player, bricks, boxes){
 		bricks[i].draw(panel);
 	for(var i in boxes)
 		boxes[i].draw(panel);
+	for(var i in monsters)
+		monsters[i].draw(panel);
+
 }
 
-function playerMotion(player, bricks, boxes){
+function Motions(player, mosters){
+	//player
 	if(forwarding){
 		player.xmoving(5);
 		for(var i in bricks){
-			if(player.chackOverlape(bricks[i])){
+			if(player.checkOverlape(bricks[i])){
 				player.xmoving(-5);
+				break;
+			}
+		}
+		for(var i in monsters){
+			if(!player.fallingDetermine(monsters[i])){
+				player.xmoving(-5);
+				player.hp-=5;
 				break;
 			}
 		}
@@ -219,8 +249,15 @@ function playerMotion(player, bricks, boxes){
 	else if(backwarding){
 		player.xmoving(-5);
 		for(var i in bricks){
-			if(player.chackOverlape(bricks[i])){
+			if(player.checkOverlape(bricks[i])){
 				player.xmoving(5);
+				break;
+			}
+		}
+		for(var i in monsters){
+			if(!player.fallingDetermine(monsters[i])){
+				player.xmoving(+5);
+				player.hp-=5;
 				break;
 			}
 		}
@@ -233,7 +270,7 @@ function playerMotion(player, bricks, boxes){
 		else{
 			player.absUp += 40;
 			for(var i in bricks){
-				if(player.chackOverlape(bricks[i])){
+				if(player.checkOverlape(bricks[i])){
 					player.absUp = bricks[i].absUp-bricks[i].height+20;
 					upwarding=false;
 					upCounter=0;
@@ -243,6 +280,17 @@ function playerMotion(player, bricks, boxes){
 			upCounter++;
 		}
 	}
+	//monster
+	for(var i in monsters){
+		if((monsters[i].mapLeft + monsters[i].vector > monsters[i].maxLeft)||(monsters[i].mapLeft + monsters[i].vector < monsters[i].minLeft)){
+			monsters[i].vector *= -1;
+		}
+		monsters[i].mapLeft += monsters[i].vector;
+		if(monsters[i].checkOverlape(player)){
+			mosters[i].mapLeft -= monsters[i].vector;
+		}
+	}
+	//falls
 	player.absUp -= 20;
 	player.inAir = true;
 	for(var i in bricks){
@@ -250,6 +298,11 @@ function playerMotion(player, bricks, boxes){
 			player.absUp = bricks[i].absUp+player.height;
 			player.inAir = false;
 			break;
+		}
+	}
+	for(var i in monsters){
+		if(!player.fallingDetermine(monsters[i])){
+			monsters.splice(i,1);
 		}
 	}
 
