@@ -47,7 +47,7 @@ class MovingObject extends Root{
 			}
 		}
 	fallingDetermine(obj){
-		if((this.mapLeft >= obj.mapLeft && this.mapLeft <= obj.mapLeft+obj.width)||(obj.mapLeft >= this.mapLeft && obj.mapLeft < this.mapLeft+this.width)){
+		if((this.mapLeft >= obj.mapLeft && this.mapLeft < obj.mapLeft+obj.width)||(obj.mapLeft >= this.mapLeft && obj.mapLeft < this.mapLeft+this.width)){
 			if(obj.absUp <= this.absUp && obj.absUp > this.absUp-this.height){
 				return false;
 			}
