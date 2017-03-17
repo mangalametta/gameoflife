@@ -314,7 +314,7 @@ function Motions(player, mosters){
 	}
 	if(player.inAir)gravityCounter++;
 	for(var i in monsters){
-		if(!player.fallingDetermine(monsters[i]) && player.inAir){
+		if(!player.fallingDetermine(monsters[i]) && !upwarding && player.inAir){
 			monsters.splice(i,1);
 		}
 	}
