@@ -2,21 +2,22 @@
 //Test Enviroment: OSX Chrome
 //Editor: Sublime Text
 //Description: for js, html and oop Execrise
-//constants
+//
 var FLOOR_HEIGHT = 50;
 var lineWIDTH = 5;
 var WIDTH = 1000;
 var HEIGHT = 750;
 var MAP_WIDTH = 2000;
 var Present_mapLeft = 0;
-var forwarding = false;
-var backwarding = false;
-var upwarding = false;
 var upCounter = 0;
 var upLimit = 10;
 var gravityCounter = 0;
 //
-
+var forwarding = false;
+var backwarding = false;
+var upwarding = false;
+var hurting = false;
+//
 class Root{
 	constructor(ml, au){
 		this.mapLeft = ml;
@@ -31,7 +32,7 @@ class Barrier extends Root{
 		super(ml,au);
 		this.width = w;
 		this.height = h;
-		this.isImmortml = I;
+		this.isImmortal = I;
 	}
 }
 
@@ -40,18 +41,18 @@ class MovingObject extends Root{
 		super(ml,au);
 	}
 	checkOverlape(obj){
-			if((this.mapLeft >= obj.mapLeft && this.mapLeft < obj.mapLeft+obj.width)||(obj.mapLeft >= this.mapLeft && obj.mapLeft < this.mapLeft+this.width)){
-				if((this.absUp <= obj.absUp&& this.absUp > obj.absUp-obj.height)||(obj.absUp <= this.absUp && obj.absUp > this.absUp-this.height)){
-					return true;
-				}
-				else{
-					return false;
-				}
+		if((this.mapLeft >= obj.mapLeft && this.mapLeft < obj.mapLeft+obj.width)||(obj.mapLeft >= this.mapLeft && obj.mapLeft < this.mapLeft+this.width)){
+			if((this.absUp <= obj.absUp&& this.absUp > obj.absUp-obj.height)||(obj.absUp <= this.absUp && obj.absUp > this.absUp-this.height)){
+				return true;
 			}
 			else{
 				return false;
 			}
 		}
+		else{
+			return false;
+		}
+	}
 	fallingDetermine(obj){
 		if((this.mapLeft >= obj.mapLeft && this.mapLeft < obj.mapLeft+obj.width)||(obj.mapLeft >= this.mapLeft && obj.mapLeft < this.mapLeft+this.width)){
 			if(obj.absUp <= this.absUp && obj.absUp > this.absUp-this.height){
@@ -129,6 +130,15 @@ class Player extends MovingObject{
 			panel.fillRect(this.mapLeft+20 -Present_mapLeft,HEIGHT-this.absUp+60,15,20);
 			panel.fillStyle = "#0C8763";
 			panel.fillRect(this.mapLeft+15 -Present_mapLeft,HEIGHT-this.absUp+60,15,20);
+		}
+		if(hurting){
+			panel.globalAlpha = 0.7;
+			panel.fillStyle = "#FF0000";
+			panel.fillRect(this.mapLeft - Present_mapLeft, HEIGHT-this.absUp,50,60);
+			panel.fillRect(this.mapLeft+20 - Present_mapLeft,HEIGHT-this.absUp+30,10,25);
+			panel.fillRect(this.mapLeft+20 -Present_mapLeft,HEIGHT-this.absUp+60,15,20);
+			panel.fillRect(this.mapLeft+15 -Present_mapLeft,HEIGHT-this.absUp+60,15,20);
+			panel.globalAlpha = 1;
 		}
 	}
 	xmoving(distance){
@@ -236,18 +246,19 @@ function updateScreen(panel, player, bricks, boxes, mosters){
 
 function Motions(player, mosters){
 	//player
+	hurting = false;
+	for(var i in monsters){
+		if(!player.fallingDetermine(monsters[i])){
+			hurting = true;
+			player.hp-=1;
+			break;
+		}
+	}
 	if(forwarding){
 		player.xmoving(5);
 		for(var i in bricks){
 			if(player.checkOverlape(bricks[i])){
 				player.xmoving(-5);
-				break;
-			}
-		}
-		for(var i in monsters){
-			if(!player.fallingDetermine(monsters[i])){
-				player.xmoving(-5);
-				player.hp-=5;
 				break;
 			}
 		}
@@ -257,13 +268,6 @@ function Motions(player, mosters){
 		for(var i in bricks){
 			if(player.checkOverlape(bricks[i])){
 				player.xmoving(5);
-				break;
-			}
-		}
-		for(var i in monsters){
-			if(!player.fallingDetermine(monsters[i])){
-				player.xmoving(+5);
-				player.hp-=5;
 				break;
 			}
 		}
@@ -293,9 +297,9 @@ function Motions(player, mosters){
 			monsters[i].vector *= -1;
 		}
 		monsters[i].mapLeft += monsters[i].vector;
-		if(monsters[i].checkOverlape(player)){
+		/*if(monsters[i].checkOverlape(player)){
 			mosters[i].mapLeft -= monsters[i].vector;
-		}
+		}*/
 	}
 	//gravity falls
 	player.absUp -= 20+gravityCounter*2;
@@ -310,7 +314,7 @@ function Motions(player, mosters){
 	}
 	if(player.inAir)gravityCounter++;
 	for(var i in monsters){
-		if(!player.fallingDetermine(monsters[i])){
+		if(!player.fallingDetermine(monsters[i]) && player.inAir){
 			monsters.splice(i,1);
 		}
 	}
