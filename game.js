@@ -1,3 +1,7 @@
+//Name: Cheng-Yao Chou
+//Test Enviroment: OSX Chrome
+//Editor: Sublime Text
+//Description: for js, html and oop Execrise
 //constants
 var FLOOR_HEIGHT = 50;
 var lineWIDTH = 5;
@@ -9,7 +13,9 @@ var forwarding = false;
 var backwarding = false;
 var upwarding = false;
 var upCounter = 0;
-var upLimit = 5;
+var upLimit = 10;
+var gravityCounter = 0;
+//
 
 class Root{
 	constructor(ml, au){
@@ -268,7 +274,8 @@ function Motions(player, mosters){
 			upCounter = 0;
 		}
 		else{
-			player.absUp += 40;
+			player.absUp += 45;
+			console.log("jumping");
 			for(var i in bricks){
 				if(player.checkOverlape(bricks[i])){
 					player.absUp = bricks[i].absUp-bricks[i].height+20;
@@ -290,16 +297,18 @@ function Motions(player, mosters){
 			mosters[i].mapLeft -= monsters[i].vector;
 		}
 	}
-	//falls
-	player.absUp -= 20;
+	//gravity falls
+	player.absUp -= 20+gravityCounter*2;
 	player.inAir = true;
 	for(var i in bricks){
 		if(!player.fallingDetermine(bricks[i])){
 			player.absUp = bricks[i].absUp+player.height;
 			player.inAir = false;
+			gravityCounter=0;
 			break;
 		}
 	}
+	if(player.inAir)gravityCounter++;
 	for(var i in monsters){
 		if(!player.fallingDetermine(monsters[i])){
 			monsters.splice(i,1);
