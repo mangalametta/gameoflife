@@ -55,7 +55,7 @@ class MovingObject extends Root{
 	}
 	fallingDetermine(obj){
 		if((this.mapLeft >= obj.mapLeft && this.mapLeft < obj.mapLeft+obj.width)||(obj.mapLeft >= this.mapLeft && obj.mapLeft < this.mapLeft+this.width)){
-			if(obj.absUp <= this.absUp && obj.absUp > this.absUp-this.height){
+			if(obj.absUp > this.absUp-this.height && obj.absUp <this.absUp){
 				return false;
 			}
 			return true;
@@ -273,7 +273,7 @@ function Motions(player, mosters){
 		}
 	}
 	if(upwarding && !player.inAir){
-		v = 40;
+		v = 35;
 	}
 	//monster
 	for(var i in monsters){
@@ -294,6 +294,11 @@ function Motions(player, mosters){
 		if(!player.fallingDetermine(bricks[i])){
 			player.absUp = bricks[i].absUp+player.height;
 			player.inAir = false;
+			v=0;
+			break;
+		}
+		if(player.checkOverlape(bricks[i])){
+			player.absUp = bricks[i].absUp-bricks[i].height;
 			v=0;
 			break;
 		}
