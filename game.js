@@ -11,7 +11,7 @@ var MAP_WIDTH = 2000;
 var Present_mapLeft = 0;
 var upCounter = 0;
 var upLimit = 10;
-var gravityCounter = 0;
+var gravity = 1;
 //
 var forwarding = false;
 var backwarding = false;
@@ -302,17 +302,17 @@ function Motions(player, mosters){
 		}*/
 	}
 	//gravity falls
-	player.absUp -= 20+gravityCounter*2;
+	player.absUp -= 20*gravity;
 	player.inAir = true;
 	for(var i in bricks){
 		if(!player.fallingDetermine(bricks[i])){
 			player.absUp = bricks[i].absUp+player.height;
 			player.inAir = false;
-			gravityCounter=0;
+			gravity=1;
 			break;
 		}
 	}
-	if(player.inAir)gravityCounter++;
+	if(player.inAir)gravity+=0.1;
 	for(var i in monsters){
 		if(!player.fallingDetermine(monsters[i]) && !upwarding && player.inAir){
 			monsters.splice(i,1);
