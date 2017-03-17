@@ -77,11 +77,13 @@ class Monster extends MovingObject{
 	}
 	draw(panel){
 		panel.fillStyle = "#90c2f4";
-		panel.fillRect(this.mapLeft - Present_mapLeft, HEIGHT - this.absUp-14,40,15);
+		panel.globalAlpha = 0.5;
+		panel.fillRect(this.mapLeft - Present_mapLeft, HEIGHT - this.absUp-14,this.width,15);
+		panel.globalAlpha = 1;
 		panel.fillStyle = "#000000";
 		panel.font = "15px Ariml";
-		panel.fillText(this.name, this.mapLeft -Present_mapLeft,HEIGHT - this.absUp);
-		panel.font = "50px Ariml";
+		panel.fillText(this.name, this.mapLeft -Present_mapLeft,HEIGHT - this.absUp,this.width);
+		panel.font = this.width+"px Ariml";
 		panel.fillText(this.symbol, this.mapLeft -Present_mapLeft,HEIGHT-this.absUp+this.height,this.width);
 	}
 	checkOverlape(obj){
@@ -281,9 +283,9 @@ function Motions(player, mosters){
 			monsters[i].vector *= -1;
 		}
 		monsters[i].mapLeft += monsters[i].vector;
-		if(monsters[i].checkOverlape(player)){
+		/*if(monsters[i].checkOverlape(player)){
 			mosters[i].mapLeft -= monsters[i].vector;
-		}
+		}*/
 	}
 	//gravity falls
 	v-=gravity;
