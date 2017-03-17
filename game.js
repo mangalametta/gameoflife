@@ -10,8 +10,8 @@ var HEIGHT = 750;
 var MAP_WIDTH = 2000;
 var Present_mapLeft = 0;
 var upCounter = 0;
-var upLimit = 10;
-var gravity = 1;
+var gravity = 3;
+var v=0;
 //
 var forwarding = false;
 var backwarding = false;
@@ -272,24 +272,8 @@ function Motions(player, mosters){
 			}
 		}
 	}
-	if(upwarding){
-		if(upCounter >= upLimit){
-			upwarding = false;
-			upCounter = 0;
-		}
-		else{
-			player.absUp += 45;
-			console.log("jumping");
-			for(var i in bricks){
-				if(player.checkOverlape(bricks[i])){
-					player.absUp = bricks[i].absUp-bricks[i].height+20;
-					upwarding=false;
-					upCounter=0;
-					break;
-				}
-			}
-			upCounter++;
-		}
+	if(upwarding && !player.inAir){
+		v = 40;
 	}
 	//monster
 	for(var i in monsters){
@@ -302,17 +286,18 @@ function Motions(player, mosters){
 		}*/
 	}
 	//gravity falls
-	player.absUp -= 20*gravity;
+	v-=gravity;
+	player.absUp += v;
 	player.inAir = true;
+	if(v <= 0)upwarding=false;
 	for(var i in bricks){
 		if(!player.fallingDetermine(bricks[i])){
 			player.absUp = bricks[i].absUp+player.height;
 			player.inAir = false;
-			gravity=1;
+			v=0;
 			break;
 		}
 	}
-	if(player.inAir)gravity+=0.1;
 	for(var i in monsters){
 		if(!player.fallingDetermine(monsters[i]) && !upwarding && player.inAir){
 			monsters.splice(i,1);
