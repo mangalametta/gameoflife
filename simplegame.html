@@ -5,7 +5,7 @@
 	<script type="text/javascript" src="game.js"></script>
 	<script type="text/javascript">
 		var screenTimer, playerTimer, panel, player, bricks, boxes;
-		var brickCount = 0;
+		var brickCount = 0,monsterCount=0;
 		function main(){
 			var c = document.getElementById("panel");
 			panel = c.getContext("2d");
@@ -16,7 +16,7 @@
 			bricks[brickCount++] = new Brick(0,FLOOR_HEIGHT,MAP_WIDTH,FLOOR_HEIGHT);
 			bricks[brickCount++] = new Brick(300,FLOOR_HEIGHT+150,100,50);
 			bricks[brickCount++] = new Brick(500,FLOOR_HEIGHT+50,100,50);
-			monsters[1] = new Monster(700,FLOOR_HEIGHT+50,50,50,580,900,"背霸","🐨",1);
+			monsters[monsterCount++] = new Monster(700,FLOOR_HEIGHT+50,50,50,580,900,"背霸","🐨",1);
 			screenTimer = setInterval("updateScreen(panel,player,bricks,boxes,monsters);",30);
 			playerTimer = setInterval("Motions(player, monsters);",40);
 		}
@@ -53,12 +53,23 @@
 		}
 		document.onkeydown=keyDownActions;
 		document.onkeyup=keyUpActions;
-		function addBrick(){
+		function addObject(){
+			var TYPE = document.getElementById('addType').value;
 			var x = parseInt(document.getElementById('x').value);
 			var y = parseInt(document.getElementById('y').value);
+			var v = parseInt(document.getElementById('vector').value);
 			var width = parseInt(document.getElementById('width').value);
 			var height = parseInt(document.getElementById('height').value);
-			bricks[brickCount++] = new Brick(x,FLOOR_HEIGHT+y,height,width);
+			if(TYPE == "monster"){
+				var minX = parseInt(document.getElementById('minX').value);
+				var maxX = parseInt(document.getElementById('maxX').value);
+				var name = document.getElementById('name').value;
+				var symbol = document.getElementById('symbol').value;
+				monsters[monsterCount++] = new Monster(x,FLOOR_HEIGHT+height,height,width,minX,maxX,name,symbol,v);
+			}
+			else{
+				bricks[brickCount++] = new Brick(x,FLOOR_HEIGHT+y,height,width);
+			}
 		}
 	</script>
 </head>
@@ -71,13 +82,27 @@
 		<div id="control_area" style="float:left;border:5px solid #666666;border-radius:10px;">
 			<p>x</p>
 			<input type="text" id="x">
-			<p>y</p>
+			<p>y(+floorHeight)</p>
 			<input type="text" id="y">
 			<p>width</p>
 			<input type="text" id="width">
-			<p>height(+floorHeight)</p>
+			<p>height</p>
 			<input type="text" id="height">
-			<button onclick="addBrick();">add</button>
+			<p>minX</p>
+			<input type="text" id="minX">
+			<p>maxX</p>
+			<input type="text" id="maxX">
+			<p>name</p>
+			<input type="text" id="name">
+			<p>symbol</p>
+			<input type="text" id="symbol">
+			<p>vector</p>
+			<input type="text" id="vector">
+			<select id = "addType">
+				<option value="brick">Brick</option>
+				<option value="monster">Monster</option>
+			</select>
+			<button onclick="addObject();">add</button>
 		</div>
 
 	</div>

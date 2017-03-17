@@ -73,7 +73,7 @@ class Monster extends MovingObject{
 		this.minLeft = lmin;
 		this.maxLeft = lmax;
 		this.symbol = s;
-		this.vector = 1;
+		this.vector = v;
 	}
 	draw(panel){
 		panel.fillStyle = "#90c2f4";
@@ -281,9 +281,9 @@ function Motions(player, mosters){
 			monsters[i].vector *= -1;
 		}
 		monsters[i].mapLeft += monsters[i].vector;
-		/*if(monsters[i].checkOverlape(player)){
+		if(monsters[i].checkOverlape(player)){
 			mosters[i].mapLeft -= monsters[i].vector;
-		}*/
+		}
 	}
 	//gravity falls
 	v-=gravity;
