@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<meta charset="UTF-8">
+	<title>Canvas exercise</title>
+	<script type="text/javascript">
+		var c, panel, count, points, nowPoint;
+		function init(){
+			count = parseInt(document.getElementById('count').value);
+			c = document.getElementById('myPanel');
+			panel = c.getContext('2d');
+			points = new Array(count);
+			for(var i=0;i<count;++i){
+				points[i] = new Array(2);
+				points[i][0] = Math.floor(Math.random() * (750 + 1));
+				points[i][1] = Math.floor(Math.random() * (750 + 1));
+			}
+			nowPoint = new Array(2);
+			nowPoint[0] = Math.floor(Math.random() * (750 + 1));
+			nowPoint[1] = Math.floor(Math.random() * (750 + 1));
+		}
+		function play(){
+			var approchPoint = Math.floor(Math.random() * (count));
+			nowPoint[0] = (nowPoint[0] + points[approchPoint][0])/2;
+			nowPoint[1] = (nowPoint[1] + points[approchPoint][1])/2;
+			panel.beginPath();
+			panel.arc(nowPoint[0],nowPoint[1],1,0,2*Math.PI);
+			panel.stroke();
+		}
+
+		function start(){
+			init();
+			for(var i=0;i<count;++i){
+				panel.beginPath();
+				panel.arc(points[i][0],points[i][1],1,0,2*Math.PI);
+				panel.stroke();
+			}
+			panel.beginPath();
+			panel.arc(nowPoint[0],nowPoint[1],1,0,2*Math.PI);
+			panel.stroke();
+			setInterval("play();",1);
+		}
+	</script>
+</html>
+<body>
+	<div id="wrapper">
+		<input type="text" id="count"/>
+		<button onclick="start();">START</button>
+		<div id = "show_area" style="float:left;">
+			<canvas id="myPanel" width="750px" height="750px" style="border:2px solid #000000"></canvas>
+		</div>
+	</div>
+
+		
+
+</body>
