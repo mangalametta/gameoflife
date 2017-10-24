@@ -1,6 +1,6 @@
 # gameoflife
-http://cheng-yao.me/gameoflife/canvas.html
+http://hashmymind.github.io/gameoflife/canvas.html
 #
-http://cheng-yao.me/gameoflife/simplegame.html
+http://hashmymind.github.io/gameoflife/simplegame.html
 #
-http://cheng-yao.me/gameoflife/chaos.html
+http://hashmymind.github.io/gameoflife/chaos.html
