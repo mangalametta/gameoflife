@@ -1,6 +1,6 @@
 # gameoflife
-http://hashmymind.github.io/gameoflife/canvas.html
+http://ninganderta.github.io/gameoflife/canvas.html
 #
-http://hashmymind.github.io/gameoflife/simplegame.html
+http://ninganderta.github.io/gameoflife/simplegame.html
 #
-http://hashmymind.github.io/gameoflife/chaos.html
+http://ninganderta.github.io/gameoflife/chaos.html
